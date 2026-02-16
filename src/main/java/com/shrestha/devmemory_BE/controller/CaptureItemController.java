@@ -12,7 +12,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin("http://localhost:4200")
 public class CaptureItemController {
     private final CaptureItemService captureItemService;
 
