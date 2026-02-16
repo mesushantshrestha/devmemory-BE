@@ -1,6 +1,7 @@
 package com.shrestha.devmemory_BE.service;
 
 import com.shrestha.devmemory_BE.dto.CreateCaptureItemRequest;
+import com.shrestha.devmemory_BE.dto.UpdateCaptureItemRequest;
 import com.shrestha.devmemory_BE.entity.CaptureItem;
 
 import java.util.List;
@@ -11,5 +12,5 @@ public interface CaptureItemService {
     List<CaptureItem> getAllItems();
     CaptureItem getItemById(UUID id);
     void deleteItem(UUID id);
-    CaptureItem updateItem(UUID id, CreateCaptureItemRequest captureItemRequest);
+    CaptureItem updateItem(UUID id, UpdateCaptureItemRequest captureItemRequest);
 }

@@ -1,6 +1,7 @@
 package com.shrestha.devmemory_BE.controller;
 
 import com.shrestha.devmemory_BE.dto.CreateCaptureItemRequest;
+import com.shrestha.devmemory_BE.dto.UpdateCaptureItemRequest;
 import com.shrestha.devmemory_BE.entity.CaptureItem;
 import com.shrestha.devmemory_BE.service.CaptureItemService;
 import jakarta.validation.Valid;
@@ -46,7 +47,7 @@ public class CaptureItemController {
     }
 
     @PutMapping("items/{id}")
-    public ResponseEntity<?> updateItem(@PathVariable UUID id, @RequestBody CreateCaptureItemRequest captureItemRequest){
+    public ResponseEntity<?> updateItem(@PathVariable UUID id, @RequestBody UpdateCaptureItemRequest captureItemRequest){
         CaptureItem updatedItem = captureItemService.updateItem(id, captureItemRequest);
         URI location = URI.create(String.format("/api/items/%s", updatedItem.getId()));
         return ResponseEntity

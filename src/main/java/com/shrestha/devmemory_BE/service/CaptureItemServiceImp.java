@@ -1,7 +1,9 @@
 package com.shrestha.devmemory_BE.service;
 
 import com.shrestha.devmemory_BE.dto.CreateCaptureItemRequest;
+import com.shrestha.devmemory_BE.dto.UpdateCaptureItemRequest;
 import com.shrestha.devmemory_BE.entity.CaptureItem;
+import com.shrestha.devmemory_BE.enums.Type;
 import com.shrestha.devmemory_BE.exception.NotFoundException;
 import com.shrestha.devmemory_BE.repository.CaptureItemRepository;
 import org.springframework.data.domain.Sort;
@@ -54,12 +56,17 @@ public class CaptureItemServiceImp implements CaptureItemService {
     }
 
     @Override
-    public CaptureItem updateItem(UUID id, CreateCaptureItemRequest captureItemRequest) {
+    public CaptureItem updateItem(UUID id, UpdateCaptureItemRequest captureItemRequest) {
          CaptureItem captureItem = captureItemRepository.findById(id).orElseThrow(() -> new NotFoundException("Item not found with id: " + id));
-         captureItem.setTitle(captureItemRequest.title());
-         captureItem.setText(captureItemRequest.text());
-         captureItem.setType(captureItemRequest.type());
-         captureItem.setLanguage(captureItemRequest.language());
+        // Only update body/text
+        if (captureItemRequest.text() != null) {
+            captureItem.setText(captureItemRequest.text());
+        }
+        // Only allow done update if TASK
+        if (captureItemRequest.done() != null && captureItem.getType() == Type.TASK) {
+            captureItem.setDone(captureItemRequest.done());
+        }
+          captureItem.setCreatedAt(Instant.now());
          return captureItemRepository.save(captureItem);
     }
 
