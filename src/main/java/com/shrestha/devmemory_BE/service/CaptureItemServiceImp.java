@@ -53,4 +53,14 @@ public class CaptureItemServiceImp implements CaptureItemService {
         captureItemRepository.deleteById(id);
     }
 
+    @Override
+    public CaptureItem updateItem(UUID id, CreateCaptureItemRequest captureItemRequest) {
+         CaptureItem captureItem = captureItemRepository.findById(id).orElseThrow(() -> new NotFoundException("Item not found with id: " + id));
+         captureItem.setTitle(captureItemRequest.title());
+         captureItem.setText(captureItemRequest.text());
+         captureItem.setType(captureItemRequest.type());
+         captureItem.setLanguage(captureItemRequest.language());
+         return captureItemRepository.save(captureItem);
+    }
+
 }

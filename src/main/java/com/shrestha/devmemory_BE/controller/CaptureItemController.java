@@ -44,4 +44,13 @@ public class CaptureItemController {
         captureItemService.deleteItem(id);
         return ResponseEntity.noContent().build(); //204
     }
+
+    @PutMapping("items/{id}")
+    public ResponseEntity<?> updateItem(@PathVariable UUID id, @RequestBody CreateCaptureItemRequest captureItemRequest){
+        CaptureItem updatedItem = captureItemService.updateItem(id, captureItemRequest);
+        URI location = URI.create(String.format("/api/items/%s", updatedItem.getId()));
+        return ResponseEntity
+                .created(location)
+                .body(updatedItem);
+    }
 }

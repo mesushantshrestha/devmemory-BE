@@ -11,4 +11,5 @@ public interface CaptureItemService {
     List<CaptureItem> getAllItems();
     CaptureItem getItemById(UUID id);
     void deleteItem(UUID id);
+    CaptureItem updateItem(UUID id, CreateCaptureItemRequest captureItemRequest);
 }
