@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: devmemory
+      POSTGRES_USER: devmemory
+      POSTGRES_PASSWORD: devmemory
+    ports:
+      - "5432:5432"
+
+  backend:
+    image: devmemory-backend:local
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: jdbc:postgresql://db:5432/devmemory
+      DB_USERNAME: devmemory
+      DB_PASSWORD: devmemory
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
