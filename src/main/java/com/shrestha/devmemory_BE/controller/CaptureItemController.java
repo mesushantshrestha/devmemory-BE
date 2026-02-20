@@ -47,8 +47,8 @@ public class CaptureItemController {
     }
 
     @PutMapping("items/{id}")
-    public ResponseEntity<?> updateItem(@PathVariable UUID id, @RequestBody UpdateCaptureItemRequest captureItemRequest){
-        CaptureItem updatedItem = captureItemService.updateItem(id, captureItemRequest);
+    public ResponseEntity<?> updateItem(@PathVariable UUID id, @PathVariable UUID userId, @RequestBody UpdateCaptureItemRequest captureItemRequest){
+        CaptureItem updatedItem = captureItemService.updateItem(userId, id, captureItemRequest);
         URI location = URI.create(String.format("/api/items/%s", updatedItem.getId()));
         return ResponseEntity
                 .created(location)

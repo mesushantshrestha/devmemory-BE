@@ -56,8 +56,9 @@ public class CaptureItemServiceImp implements CaptureItemService {
     }
 
     @Override
-    public CaptureItem updateItem(UUID id, UpdateCaptureItemRequest captureItemRequest) {
-         CaptureItem captureItem = captureItemRepository.findById(id).orElseThrow(() -> new NotFoundException("Item not found with id: " + id));
+    public CaptureItem updateItem(UUID userId, UUID id, UpdateCaptureItemRequest captureItemRequest) {
+         CaptureItem captureItem = captureItemRepository.findByIdAndUser_Id(userId,id)
+                 .orElseThrow(() -> new NotFoundException("Item not found with id: " + id));
         // Only update body/text
         if (captureItemRequest.text() != null) {
             captureItem.setText(captureItemRequest.text());
