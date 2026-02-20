@@ -1,5 +1,5 @@
 -- 1) Add nullable user_id first (safe for existing rows)
-ALTER TABLE items
+ALTER TABLE capture_items
   ADD COLUMN IF NOT EXISTS user_id UUID;
 
 -- 2) Add foreign key constraint
@@ -18,4 +18,4 @@ BEGIN
 END $$;
 
 -- 3) Add index for fast per-user queries
-CREATE INDEX IF NOT EXISTS idx_items_user_id ON items(user_id);
+CREATE INDEX IF NOT EXISTS idx_items_user_id ON capture_items(user_id);
