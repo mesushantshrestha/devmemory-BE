@@ -1,5 +1,6 @@
 package com.shrestha.devmemory_BE.controller;
 
+import com.shrestha.devmemory_BE.dto.CaptureItemResponse;
 import com.shrestha.devmemory_BE.dto.CreateCaptureItemRequest;
 import com.shrestha.devmemory_BE.dto.UpdateCaptureItemRequest;
 import com.shrestha.devmemory_BE.entity.CaptureItem;
@@ -27,8 +28,8 @@ public class CaptureItemController {
 
     @PostMapping("/items")
     public ResponseEntity<?> addItem(@Valid @RequestBody CreateCaptureItemRequest captureItemRequest) {
-        CaptureItem captureItem = captureItemService.createCaptureItem(captureItemRequest);
-        URI location = URI.create(String.format("/api/items/%s", captureItem.getId()));
+        CaptureItemResponse captureItem = captureItemService.createCaptureItem(captureItemRequest);
+        URI location = URI.create(String.format("/api/items/%s", captureItem.id()));
 
         return ResponseEntity
                 .created(location)
@@ -47,9 +48,9 @@ public class CaptureItemController {
     }
 
     @PutMapping("items/{id}")
-    public ResponseEntity<?> updateItem(@PathVariable UUID id, @PathVariable UUID userId, @RequestBody UpdateCaptureItemRequest captureItemRequest){
-        CaptureItem updatedItem = captureItemService.updateItem(userId, id, captureItemRequest);
-        URI location = URI.create(String.format("/api/items/%s", updatedItem.getId()));
+    public ResponseEntity<?> updateItem(@PathVariable UUID id, @RequestBody UpdateCaptureItemRequest captureItemRequest){
+        CaptureItemResponse updatedItem = captureItemService.updateItem(id, captureItemRequest);
+        URI location = URI.create(String.format("/api/items/%s", updatedItem.id()));
         return ResponseEntity
                 .created(location)
                 .body(updatedItem);
