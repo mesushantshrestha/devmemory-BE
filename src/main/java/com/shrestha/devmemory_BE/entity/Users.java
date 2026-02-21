@@ -14,7 +14,7 @@ public class Users {
     @Column(nullable = false, updatable = false)
     private UUID id;
     @Column(name = "google_sub", nullable = false, unique = true, length = 64)
-    private String google_sub;
+    private String googleSub;
     @Column(nullable = false)
     private String email;
     private String name;
