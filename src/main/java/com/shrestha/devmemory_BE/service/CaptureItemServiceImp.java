@@ -26,15 +26,17 @@ public class CaptureItemServiceImp implements CaptureItemService {
     private final CaptureItemRepository captureItemRepository;
 
     private final UserRepository userRepository;
+    private final CurrentUserProvider currentUserProvider;
 
-    public CaptureItemServiceImp(CaptureItemRepository captureItemRepository, UserRepository userRepository) {
+    public CaptureItemServiceImp(CaptureItemRepository captureItemRepository, UserRepository userRepository, CurrentUserProvider currentUserProvider) {
         this.captureItemRepository = captureItemRepository;
         this.userRepository = userRepository;
+        this.currentUserProvider = currentUserProvider;
     }
     @Override
     public CaptureItemResponse createCaptureItem(CreateCaptureItemRequest captureItemRequest) {
         CaptureItem captureItem = new CaptureItem();
-
+        UUID userId = currentUserProvider.getCurrentUserID();
         //Temp
         Users users = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("ItemNotFound"));
@@ -50,22 +52,23 @@ public class CaptureItemServiceImp implements CaptureItemService {
 
     @Override
     public List<CaptureItemResponse> getAllItems() {
-        List<CaptureItem> captureItems = captureItemRepository.findAll(
-                Sort.by(Sort.Direction.DESC, "createdAt")
-        );
+        UUID userId = currentUserProvider.getCurrentUserID();
+        List<CaptureItem> captureItems = captureItemRepository.findAllByUser_Id(userId, Sort.by(Sort.Direction.DESC, "createdAt"));
         return captureItems.stream().map(this::toResponse).toList();
     }
 
     @Override
     public CaptureItemResponse getItemById(UUID id) {
-        CaptureItem item = captureItemRepository.findById(id)
+        UUID userId = currentUserProvider.getCurrentUserID();
+        CaptureItem item = captureItemRepository.findByIdAndUser_Id(id, userId)
                 .orElseThrow(() -> new NotFoundException("Item not found with id: " + id));
         return toResponse(item);
     }
 
     @Override
     public void deleteItem(UUID id) {
-        if (!captureItemRepository.existsById(id)) {
+        UUID userId = currentUserProvider.getCurrentUserID();
+        if (!captureItemRepository.existsByIdAndUser_Id(id, userId)) {
             throw new NotFoundException("Item not found with id: " + id);
         }
         captureItemRepository.deleteById(id);
@@ -73,7 +76,8 @@ public class CaptureItemServiceImp implements CaptureItemService {
 
     @Override
     public CaptureItemResponse updateItem(UUID id, UpdateCaptureItemRequest captureItemRequest) {
-         CaptureItem captureItem = captureItemRepository.findById(id)
+        UUID userId = currentUserProvider.getCurrentUserID();
+         CaptureItem captureItem = captureItemRepository.findByIdAndUser_Id(id, userId)
                  .orElseThrow(() -> new NotFoundException("Item not found with id: " + id));
         // Only update body/text
         if (captureItemRequest.text() != null) {
