@@ -19,10 +19,6 @@ import java.util.UUID;
 
 @Service
 public class CaptureItemServiceImp implements CaptureItemService {
-    //Temp
-    @Value("${app.dev.single-user-id}")
-    private UUID userId;
-
     private final CaptureItemRepository captureItemRepository;
 
     private final UserRepository userRepository;

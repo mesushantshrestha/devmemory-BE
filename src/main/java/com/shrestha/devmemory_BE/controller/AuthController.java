@@ -20,8 +20,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    @Value("${app.dev.single-user-id}")
-    private UUID currentUserId;
     private final UserRepository userRepository;
     private final UserService userService;
     public AuthController(UserRepository userRepository, UserService userService) {
